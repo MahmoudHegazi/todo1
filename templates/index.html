@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+  .close_btn {
+    float: right;
+    cursor:pointer;
+  }
+  .close_btn:hover {
+    color: red;
+  }
+  .active a, a {
+    color:black !important;
+  }
+  .header_h2 {
+    color: black;
+
+    font-family: lemon;
+    width: 10%;
+    padding: 5px;
+
+  }
+  .update_box {
+     margin-right: 5px;
+  }
+  .main_container, .aside_container {
+    height: 700px;
+  }
+  .active {
+    background-color: lightgreen !important;
+    border: 1px solid white !important;
+  }
+  </style>
+  <script src="static/scripts.js"></script>
+</head>
+<body>
+
+
+
+
+
+<div class="container-fluid" style="width:80%;">
+<br/><br/>
+  <div class="row">
+    <div class="col-sm-4 aside_container" style="background-color:rgb(245, 150, 200);">
+      <div class="container">
+  <h2 class="header_h2 ">Lists </h2>
+
+  <div class="list-group col-sm-3">
+
+    <!-- Add Todo Model start -->
+    <div class="container">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+        Add New List <i class="fa fa-plus"></i>
+      </button>
+
+      <!-- The Modal -->
+      <div class="modal" id="myModal1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Add New List</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+    <form action="/add_list" method='POST'>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group">
+              <label for="todoname">List Name: </label>
+              <input class="form-control" type="text" name="listname"><br /><br />
+
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Add <i class="fa fa-plus"></i></button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+    </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br />
+    <!-- add Todo Model end -->
+
+
+
+<br /><br />
+      {% if lists %}
+      {% for list_item in lists %}
+    <div class="list-group-item"><a href="{{url_for('todoList', listid = list_item.id) }}">{{list_item.name}}</a>
+    <span class="close_btn"><i class="fa fa-close"></i></span>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+</div>
+    </div>
+    <div class="col-sm-8 main_container" style="background-color:rgb(12, 150, 150);">
+
+
+
+
+
+<div class="container col-sm-10">
+  <h2><i class="fa fa-tasks" style="color:white;"></i> First Item   <button class="btn btn-danger">Rename</button></h2>
+
+
+
+<!-- Add Todo Model start -->
+<div class="container">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    Add Todo <i class="fa fa-plus"></i>
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add New Todo Item</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+<form action="/add_todo" method='POST'>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+          <label for="todoname">Todo Name: </label>
+          <input class="form-control" type="text" name="todoname"><br /><br />
+          <label for="tododate">Todo Date: </label>
+          <input class="form-control" type="date" name="tododate"><br /><br />
+          <label for="todolist">Todo List: </label>
+          <select class="form-control" name="todolist">
+               {% if lists %}
+                 {% for list in lists %}
+                 <option value="{{list.id}}">{{list.name}}</option>
+                 {% endfor %}
+               {% endif %}
+            </select>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add <i class="fa fa-plus"></i></button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+</form>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br />
+<!-- add Todo Model end -->
+ <span id="msg_html"></span>
+
+
+<! -- notification_message -->
+
+ {% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+
+   <div class="alert alert-info">
+   <strong> {{ message }} </strong>
+   <span class="closebtn" style="float:right;background-color:red;color:white;padding:2px;width:25px;text-align:center;margin-bottom:26px;font-size:1em;cursor:pointer;font-weight:bold;border:2px solid white;border-radous:8%;">&times;</span>
+   </div>
+{% endfor %}
+
+{% endif %}
+{% endwith %}
+
+
+
+<script>
+var close = document.getElementsByClassName("closebtn");
+var i;
+
+for (i = 0; i < close.length; i++) {
+close[i].onclick = function(){
+var div = this.parentElement;
+div.style.opacity = "0";
+setTimeout(function(){ div.style.display = "none"; }, 600);
+}
+}
+</script>
+
+<! -- notification_message end -->
+
+    <div class="input-group">
+
+      <input id="msg" type="text" class="form-control" name="msg" placeholder="Search For Item">
+      <span class="input-group-addon" style="cursor:pointer">Search <i class="fa fa-search"></i></span>
+    </div>
+  <div id="todos_father" class="" style="border:10px solid rgb(245, 150, 200);height:400px;background:white;overflow:auto;">
+    {% if todos %}
+    {% for todo in todos %}
+    <a class="list-group-item delete_todo1" style="display:block;"><span class="update_box">
+      <input type="checkbox" name="update_{{todo.id}}"></span> {{todo.name}} ({{todo.id}})
+      <i id="{{todo.id}}" class="close_btn fa fa-close delete_todo" data-todo-id="{{todo.id}}"></i>
+    </a>
+    {% endfor %}
+    {% endif %}
+
+  </div>
+  <br />
+  <button class="btn btn-warning" style="color:black;">Complete All</button>
+</div>
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+</html>
