@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+.popup-overlay{
+position:fixed;
+
+background-color:#000000b0;
+
+left:0;
+
+top:0;
+
+z-index:1000;
+
+width:100%;
+
+height:100%;
+}
+
+.popup-box{
+
+position:fixed;
+
+left:50%;
+
+top:50%;
+
+transform:translate(-50%,-50%);
+
+background-color: white;
+
+border:1px solid black;
+
+padding:10px;
+
+z-index: 1001;
+}
+
+.close-btn{
+
+position:absolute;
+
+z-index: 1001;
+
+font-size: 2em;
+
+color:white;
+
+right:3%;
+
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1 class="box">Click On ME</h1>
+
+
+
+<script>
+
+
+
+// creat pop up for our services boxes
+
+let boxes= document.querySelectorAll(".box");
+
+boxes.forEach(box=>{
+
+
+box.addEventListener("click" , (e) => {
+
+     // creat overlay element
+let overlay=document.createElement("div");
+
+     //add some styles to overlay
+overlay.className = "popup-overlay";
+
+document.body.appendChild(overlay);
+
+     // creat popup
+
+
+      
+    box.classList.toggle("popup-box");
+
+    // creat close span
+
+    let closeBtn =document.createElement("span");
+
+    // creat the close text
+
+    let closeText =document.createTextNode("x");
+
+    closeBtn.appendChild(closeText);
+    
+
+    // creat styles to closeBtn
+
+    closeBtn.className ="close-btn";
+
+    overlay.appendChild(closeBtn);
+        closeBtn.addEventListener('click', (e)=> {
+      alert('User Click On ' + e.target.nodeName + 'parent element className: ' + e.target.parentNode.className);
+      // hide or use .remove() to remove the overlay
+      //e.target.parentNode.remove();
+      e.target.parentNode.style.display = 'none';
+      box.classList.remove('popup-box');
+    });
+    
+
+});
+
+});
+
+
+</script>
+</body>
+</html>
